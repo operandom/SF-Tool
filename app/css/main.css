@@ -1,0 +1,355 @@
+@font-face {
+	font-family: 'Source Code Pro';
+	src: url('../fonts/SourceCodePro-Regular.otf');
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: 'Source Code Pro';
+	src: url('../fonts/SourceCodePro-Bold.otf');
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: 'Source Sans Pro';
+	src: url('../fonts/SourceSansPro-Regular.otf');
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: 'Source Sans Pro';
+	src: url('../fonts/SourceSansPro-Bold.otf');
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: 'Source Sans Pro';
+	src: url('../fonts/SourceSansPro-Black.otf');
+	font-weight: 800;
+}
+
+@font-face{
+	font-family:'Glyphicons Halflings';
+	src: url(../fonts/glyphicons-halflings-regular.ttf) format('truetype')
+}
+
+
+/*----------------------------------------------------------------------------*/
+
+
+button i {
+	font-size: 0.8em;
+	font-style: normal;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	margin: 0px;
+	height: 100%;
+}
+
+html {
+	opacity: 0;
+	transition: opacity 500ms;
+}
+
+html.ready {
+	opacity: 1;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+}
+
+body>header, body>footer {
+	flex-shrink: 0;
+}
+
+body>section {
+	min-height: 100px;
+}
+
+
+/* ICONS */
+
+.back:before {
+	content: "\e079";
+}
+
+.on-off:before {
+	content: "\e017";
+}
+
+.close {
+	background-color: rgba(255,0,0,.3) !important;
+}
+
+.web {
+	background-color: rgba(0,0,0,.2) !important;
+}
+
+.close:before {
+	content: "\e014";
+}
+
+.directory:before {
+	content: "\e118";
+}
+
+.open:before {
+	content: "\e167";
+}
+
+.minimize:before {
+	content: "\2212";
+}
+
+.maximize:before {
+	content: "\e140";
+}
+
+.task:before {
+	content: "\e137";
+}
+
+.reload:before {
+	content: "\e030";
+}
+
+.web:before {
+	content: "\e135";
+}
+
+
+/* DROP ZONE */
+
+#dropZone {
+	-webkit-app-region: drag;
+	-webkit-user-select: none;
+	
+	flex: 1;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #444;
+	background-image: 
+		radial-gradient(circle at center, rgba(0,0,0,0), rgba(0,0,0,1)),
+		url(../img/background-noise.png),
+		url(../img/background-logo.svg);
+	background-repeat: no-repeat, repeat, no-repeat;
+	background-position: center;
+	box-shadow: 0 0 20px rgba(0,0,0,1) inset;
+	
+	transition: background-color 500ms;
+}
+
+#dropZone.dragOver {
+	background-color: #666;
+}
+
+#dropZone h1 {
+	display: block;
+	padding: 0;
+	margin: 0;
+	font-size: 5em;
+	font-weight: 800;
+	text-align: center;
+	line-height: .8em;
+	text-transform: uppercase;
+	color: rgba(0,0,0,0);
+	text-shadow: 0px 0px 0px rgba(0,0,0,.5);
+	
+	transition: all 300ms;
+}
+#dropZone h1 span {
+	text-transform: none;
+}
+
+#dropZone.dragOver h1 {
+	text-shadow: 0px 0px 10px rgba(0,0,0,0);
+	-webkit-transform: scale(1.2);
+}
+
+
+/* CONSOLE */
+
+.blackHeader {
+	-webkit-user-select: none;
+
+	flex-shrink: 0;
+	color: #999;
+	background-color: #444;
+	box-shadow: 0px 0px 3px rgba(0,0,0,1);
+	z-index: 1;
+	padding: 8px;
+	border-left: 10px solid;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	text-shadow: 0 1px 2px rgba(0,0,0,.5);
+}
+
+.stdout {
+	flex-grow: 1;
+	margin: 0px;
+	padding: 4px;
+	background-color: #333;
+	font-family: "Source Code Pro", monospace;
+	font-size: 0.7em;
+	color: #fff;
+	overflow-y: auto;
+	word-wrap: break-word;
+}
+
+.stdin {
+	flex-shrink: 0;
+	width: 100%;
+	border: none;
+	background-color: #333;
+	padding:  8px;
+	margin: 0;
+	border-top: 1px solid #222;
+	font-size: 1.5em;
+	font-family: "Source Code Pro", monospace;
+	color: #FFF;
+}
+
+.stdin:focus {
+	outline: 0;
+	background-color: #444;
+	box-shadow: 1px 1px 6px rgba(0,0,0,.5) inset;
+}
+
+.stdin::-webkit-input-placeholder {
+    color: rgba(0,0,0,.2);
+}
+
+
+/* MENU */
+
+#menu {
+	-webkit-app-region: drag;
+	
+	flex-shrink: 0;
+	background-color: #333;
+	min-height: inherit;
+	background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.2) 100%);
+	display: flex;
+	justify-content: space-between;
+	z-index: 2;
+	border-top: 1px solid rgba(255,255,255,.2);
+	border-bottom: 1px solid rgba(0,0,0,.5);
+}
+
+
+#logo {
+	width: 22px;
+	margin: 4px
+}
+
+#menu nav {
+	display: flex;
+	flex-shrink: 0;
+}
+
+#menu button {
+	-webkit-app-region: no-drag;
+	
+	flex-shrink: 0;
+	display: flex;
+	margin: 0;
+	padding: 8px;
+	border: none;
+	border-left: 1px solid rgba(255,255,255,.1);
+	border-right: 1px solid rgba(0,0,0,.3);
+	background: none;
+	color: #fff;
+	font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	letter-spacing: .2em;
+	line-height: 14px;
+	text-transform: uppercase;
+	text-shadow: 0 0 3px rgba(0,0,0,1);
+	outline: none;
+}
+
+#menu button:before {
+	padding-right: 6px;
+	font-family: 'Glyphicons Halflings';
+}
+
+#menu button:empty:before {
+	padding: 0;
+}
+
+#menu button:hover {
+	background-image: radial-gradient(ellipse at center, rgba(255,255,255,.2) 0%,rgba(255,255,255,0) 100%);
+	background-size: contain;
+}
+
+#menu button:active {
+	background-image: radial-gradient(ellipse at center, rgba(100,175,255,.5) 0%,rgba(100,175,255,.1) 100%);
+	background-size: contain;
+	box-shadow: 0 0 10px rgba(100,175,255,.5);
+}
+
+#menu button[disabled] {
+	display: none;
+}
+
+
+/* TERMINAL */
+
+#terminalWrapper {
+	flex-grow: 3;
+	display: flex;
+	flex-direction: column;
+}
+
+
+/* SERVER */
+
+#serverOutput {
+	flex-grow: 1;
+	display: flex;
+	flex-flow: column;
+	max-height: 33%;
+}
+
+
+/* FOOTER */
+
+body>footer {
+	background-color: #222;
+	color: #666;
+	font-size: 0.8em;
+	padding: 4px;
+	border-top: 1px solid rgba(255,255,255,.15);
+}
+
+
+/* SCROLL BAR */
+
+::-webkit-scrollbar {
+    width: 12px;
+	overflow: hidden;
+	padding: 10px;
+}
+ 
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 1px;
+    background: rgba(255,255,255,0.2);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,255,255,0.1); 
+}

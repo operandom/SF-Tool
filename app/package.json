@@ -1,0 +1,17 @@
+{
+	"name": "sftool",
+	"main": "index.html",
+	"version": "0.1.0",
+	"single-instance": true,
+	"window": {
+		"title": "SF Tool",
+		"icon": "icon.png",
+		"toolbar": false,
+		"frame": false,
+		"width": 640,
+		"height": 480,
+		"min_width": 640,
+		"min_height": 480
+	},
+	"chromium-args": "--child-clean-exit"
+}

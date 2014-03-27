@@ -1,0 +1,39 @@
+<header>
+</header>
+
+
+<section id="menu">
+	<nav>
+		<img id="logo" src="img/logo.svg" />
+		<button class="back" ng-click="go('/drop')">Drop</button>
+		<button class="directory" ng-click="openFolder()">Folder</button>
+		<button class="web" ng-click="showRoot()" ng-disabled="{{ isSymfony }}">WWW</button>
+		<button class="web" ng-click="showProd()" ng-disabled="{{ !isSymfony }}">Prod</button>
+		<button class="web" ng-click="showDev()" ng-disabled="{{ !isSymfony }}">Dev</button>
+	</nav>
+	<nav>
+		<button class="reload" ng-click="reload()"></button>
+		<button class="task" ng-click="devtools()"></button>
+		<button class="maximize" ng-click="maximize()"></button>
+		<button class="minimize" ng-click="minimize()"></button>
+		<button class="close" ng-click="close()"></button>
+	</nav>
+</section>
+
+
+<section id="serverOutput">
+	<header class="blackHeader">Server</header>
+	<pre id="server" class="stdout">{{ server }}</pre>
+</section>
+
+
+<section id="terminalWrapper">
+	<header class="blackHeader">terminal</header>
+	<pre id="terminal" class="stdout">{{ stdout }}</pre>
+	<input id="terminalInput" class="stdin" type="text" placeholder="Type your command here. Shortcuts: sf, clear." ng-keydown="onkeypress($event, $scope)">
+</section>
+
+
+<footer>
+	Directory: {{ folder }}
+</footer>
