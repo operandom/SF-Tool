@@ -122,7 +122,7 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 		cwd: serverRoot,
 		env: process.env,
 		detached: false,
-		stdio: ['pipe', 'pipe', 'pipe'],
+		stdio: ['pipe', 'pipe', 'pipe']
 	};
 
 
@@ -288,7 +288,7 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 				cwd: config.folder,
 				env: process.env,
 				detached: false,
-				stdio: ['pipe', 'pipe', 'pipe'],
+				stdio: ['pipe', 'pipe', 'pipe']
 			};
 
 			try {
