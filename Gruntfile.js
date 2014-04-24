@@ -31,7 +31,11 @@ module.exports = function (grunt) {
 			options: {
 				jshintrc: '.jshintrc'
 			},
-			files: '<%= config.app %>/js/*.js'
+			files: [
+				'Gruntfile.js',
+				'<%= config.app %>/js/**/*.js',
+				'!<%= config.app %>/js/libs/*.js'
+			]
 		},
 		copy: {
 			appLinux: {
@@ -120,7 +124,7 @@ module.exports = function (grunt) {
 			}
 		}
 	});
-	
+
 	grunt.registerTask('chmod', 'Add lost Permissions.', function () {
 		var fs = require('fs');
 		fs.chmodSync('dist/SFTool.app/Contents/Frameworks/node-webkit Helper EH.app/Contents/MacOS/node-webkit Helper EH', '555');
