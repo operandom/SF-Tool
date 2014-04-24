@@ -34,7 +34,7 @@ module.exports = function (grunt) {
 			files: [
 				'Gruntfile.js',
 				'<%= config.app %>/js/**/*.js',
-				'!<%= config.app %>/js/libs/*.js'
+				'!<%= config.app %>/js/vendor/*.js'
 			]
 		},
 		copy: {
