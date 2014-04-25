@@ -5,7 +5,7 @@
 angular.module('sfc').controller('MainCtrl', function ($scope, $location, config, session, server) {
 
 	'use strict';
-	
+
 	var fs = require('fs'),
 		sep = require('path').sep,
 		spawn = require('child_process').spawn,
@@ -30,7 +30,7 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 		serverRoot = session.folder + sep + 'web',
 		serverElement = document.getElementById('server')
 		;
-		
+
 
 	if (session.folder === null) {
 		$location.path('/drop');
@@ -62,15 +62,15 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 	};
 
 	$scope.showRoot = function () {
-		link('http://' + server.address + ':' + server.port);
+		link(getUrl());
 	};
 
 	$scope.showProd = function () {
-		link('http://' + server.address + ':' + server.port);
+		link(getUrl());
 	};
 
 	$scope.showDev = function () {
-		link('http://' + server.address + ':' + server.port + '/app_dev.php');
+		link(getUrl() + 'app_dev.php');
 	};
 
 	$scope.close = function () {
@@ -113,10 +113,10 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 	}
 
 
-	
+
 	//-- SERVER ----------------------------------------------------------------
-	
-			
+
+
 
 	server.on('error', function (event) {
 		updateServerElement(event.type, event.error);
@@ -129,19 +129,27 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 	server.on('data', function (event) {
 		updateServerElement(event.type, event.data);
 	});
-	
+
 	server.on('close', function (event) {
 		updateServerElement(event.type, event.code);
 	});
-	
+
 	server.listen($scope.isSymfony ? serverRoot : session.folder, null, null, $scope.isSymfony ? config.routeur : null);
 
 	function updateServerElement(type, message) {
 		$scope.$apply(function () {
 			$scope.server += '[' + type.toUpperCase() + '] ' + message;
 		});
-		
+
 		serverElement.scrollTop = serverElement.scrollHeight * 2;
+	}
+
+
+	function getUrl() {
+
+		var address = server.address === '0.0.0.0' ? 'localhost' : server.address;
+
+		return 'http://' + address + ':' + server.port + '/';
 	}
 
 

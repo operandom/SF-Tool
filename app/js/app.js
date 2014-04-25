@@ -19,7 +19,7 @@
 		nativeWindow = gui.Window.get(),
 		isMaximize,
 		isMinimize
-	;
+		;
 
 
 	// MODULE
@@ -32,7 +32,7 @@
 	.value('config', {
 		routeur: process.cwd() + sep + 'phpserver' + sep + 'router.php'
 	})
-	
+
 	.value('session', {
 		folder: null
 	})
