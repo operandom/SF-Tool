@@ -3,7 +3,6 @@
 	"version": "0.1.0",
 	"description": "A tool for Symfony2 projects.",
 	"keywords": ["Symfony2"],
-
 	"homepage": "https://github.com/operandom/sftool",
 	"bugs": "https://github.com/operandom/sftool/issues",
 	"author": {
@@ -15,8 +14,9 @@
 		"type": "git",
 		"url": "https://github.com/operandom/SF-Tool.git"
 	},
-
-	"dependencies": {},
+	"dependencies": {
+		"php-built-in-server": "^0.1.1"
+	},
 	"devDependencies": {
 		"matchdep": "~0.1.2",
 		"grunt": "~0.4.1",
