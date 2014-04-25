@@ -13,5 +13,8 @@
 		"min_width": 640,
 		"min_height": 480
 	},
-	"chromium-args": "--child-clean-exit"
+	"chromium-args": "--child-clean-exit",
+	"dependencies": {
+		"php-built-in-server": "^0.1.1"
+	}
 }
