@@ -12,8 +12,6 @@ results
 
 npm-debug.log
 node_modules
-resources/node-webkit/*
-tmp
-dist
+builds
 
 !.gitkeep
