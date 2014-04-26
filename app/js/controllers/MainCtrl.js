@@ -134,11 +134,16 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 		updateServerElement(event.type, event.code);
 	});
 
-	server.listen($scope.isSymfony ? serverRoot : session.folder, null, null, $scope.isSymfony ? config.routeur : null);
+	server.listen(
+		$scope.isSymfony ? serverRoot : session.folder,
+		null,
+		null,
+		$scope.isSymfony ? config.routeur.symfony : config.routeur.default
+	);
 
 	function updateServerElement(type, message) {
 		$scope.$apply(function () {
-			$scope.server += '[' + type.toUpperCase() + '] ' + message;
+			$scope.server += '[' + type.toUpperCase() + '] ' + message + '\n';
 		});
 
 		serverElement.scrollTop = serverElement.scrollHeight * 2;

@@ -30,7 +30,10 @@
 	// FOLDER
 
 	.value('config', {
-		routeur: process.cwd() + sep + 'phpserver' + sep + 'router.php'
+		routeur: {
+			'default': process.cwd() + sep + 'phpserver' + sep + 'defaultRtr.php',
+			'symfony': process.cwd() + sep + 'phpserver' + sep + 'symfonyRtr.php'
+		}
 	})
 
 	.value('session', {
