@@ -6,7 +6,7 @@ module.exports = function (grunt) {
 
 	var config = {
 		app: 'app',
-		dist: 'builds',
+		dist: 'builds'
 	};
 
 
