@@ -127,7 +127,12 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 	});
 
 	server.on('data', function (event) {
-		updateServerElement(event.type, event.data);
+		var regexp = /\[((?:(?!\]\s).)*)\]\s/,
+			result = regexp.exec(event.data),
+			type = result ? result[1] : null,
+			message = event.data.toString().replace(regexp, '');
+				
+		updateServerElement(type || event.type, message);
 	});
 
 	server.on('close', function (event) {
