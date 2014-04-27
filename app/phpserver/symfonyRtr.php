@@ -20,9 +20,9 @@ function trace() {
 		$message = implode(' ', func_get_args());
 	}
 	
-	$time = date('[TRACE] h:m:s',time());
+	$time = date('h:m:s',time());
 	
-	fwrite($stderr, "$time > $message\n");
+	fwrite($stderr, "[TRACE] $time > $message\n");
 }
 
 if (is_file($_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.$_SERVER['SCRIPT_NAME'])) {
