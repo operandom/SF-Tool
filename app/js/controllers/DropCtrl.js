@@ -2,10 +2,10 @@
  * @author Valéry Herlaud
  */
 
-angular.module('sfc').controller('DropCtrl', function ($scope, config) {
-	
+angular.module('sfc').controller('DropCtrl', function ($scope, session) {
+
 	'use strict';
-	
-	$scope.folder = config.folder;
-	
+
+	$scope.folder = session.folder;
+
 });

@@ -14,11 +14,12 @@
 	console.groupEnd();
 
 	var fs = require('fs'),
+		sep = require('path').sep,
 		gui = require('nw.gui'),
 		nativeWindow = gui.Window.get(),
 		isMaximize,
 		isMinimize
-	;
+		;
 
 
 	// MODULE
@@ -29,10 +30,17 @@
 	// FOLDER
 
 	.value('config', {
+		routeur: {
+			'default': process.cwd() + sep + 'phpserver' + sep + 'defaultRtr.php',
+			'symfony': process.cwd() + sep + 'phpserver' + sep + 'symfonyRtr.php'
+		}
+	})
+
+	.value('session', {
 		folder: null
 	})
 
-	.directive('droppable', function ($location, config) {
+	.directive('droppable', function ($location, session) {
 
 		return {
 			restrict: 'A',
@@ -42,7 +50,7 @@
 					var directory = event.dataTransfer.files[0].path;
 
 					if (fs.lstatSync(directory).isDirectory()) {
-						config.folder = directory;
+						session.folder = directory;
 						$location.path('/');
 						$scope.$apply();
 					} else {

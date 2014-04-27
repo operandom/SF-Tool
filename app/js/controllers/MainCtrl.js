@@ -2,12 +2,12 @@
  * @author Valéry Herlaud
  */
 
-angular.module('sfc').controller('MainCtrl', function ($scope, $location, config) {
+angular.module('sfc').controller('MainCtrl', function ($scope, $location, config, session, server) {
 
 	'use strict';
 
-	var sep = require('path').sep,
-		router = process.cwd() + sep + 'phpserver' + sep + 'router.php',
+	var fs = require('fs'),
+		sep = require('path').sep,
 		spawn = require('child_process').spawn,
 		//        ansi = require('ansi-html-stream'),
 		gui = require('nw.gui'),
@@ -27,13 +27,12 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 
 		//        ansiPipe,
 
-		serverRoot = config.folder + sep + 'web',
-		serverElement = document.getElementById('server'),
-		serverProcess,
-		serverParameters,
-		serverOptions;
+		serverRoot = session.folder + sep + 'web',
+		serverElement = document.getElementById('server')
+		;
 
-	if (config.folder === null) {
+
+	if (session.folder === null) {
 		$location.path('/drop');
 		return;
 	}
@@ -48,12 +47,12 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 
 
 	$scope.server = '';
-	$scope.isSymfony = false;
+	$scope.isSymfony = fs.existsSync(serverRoot);
 	$scope.stdout = '';
 	$scope.html = '';
-	$scope.folder = config.folder;
+	$scope.folder = session.folder;
 	$scope.terminal = function () {};
-	$scope.openFolder = openFolder(config.folder);
+	$scope.openFolder = openFolder(session.folder);
 	$scope.onkeypress = keyPressHandler;
 
 	$scope.go = function (path) {
@@ -63,15 +62,15 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 	};
 
 	$scope.showRoot = function () {
-		link('http://localhost/');
+		link(getUrl());
 	};
 
 	$scope.showProd = function () {
-		link('http://localhost/');
+		link(getUrl());
 	};
 
 	$scope.showDev = function () {
-		link('http://localhost/app_dev.php');
+		link(getUrl() + 'app_dev.php');
 	};
 
 	$scope.close = function () {
@@ -114,74 +113,53 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 	}
 
 
+
 	//-- SERVER ----------------------------------------------------------------
 
-	serverParameters = ['-S', 'localhost:80', router];
-
-	serverOptions = {
-		cwd: serverRoot,
-		env: process.env,
-		detached: false,
-		stdio: ['pipe', 'pipe', 'pipe'],
-	};
 
 
-	// Try classic symfony configuration
-	try {
+	server.on('error', function (event) {
+		updateServerElement(event.type, event.error);
+	});
 
-		serverProcess = spawn('php', serverParameters, serverOptions);
-		serverProcess.addListener('close', serverCloseHandler);
-		serverProcess.addListener('error', serverErrorHandler);
+	server.on('listening', function (event) {
+		updateServerElement(event.type, event.host.address + ':' + event.host.port);
+	});
 
-		serverProcess.stdout.addListener('data', serverDataHandler);
-		serverProcess.stderr.addListener('data', serverDataHandler);
+	server.on('data', function (event) {
+		var regexp = /\[((?:(?!\]\s).)*)\]\s/,
+			result = regexp.exec(event.data),
+			type = result ? result[1] : null,
+			message = event.data.toString().replace(regexp, '');
+				
+		updateServerElement(type || event.type, message);
+	});
 
-		$scope.server += '[READY] As Symfony2 project';
-		$scope.isSymfony = true;
+	server.on('close', function (event) {
+		updateServerElement(event.type, event.code);
+	});
 
-	} catch (error) {
+	server.listen(
+		$scope.isSymfony ? serverRoot : session.folder,
+		null,
+		null,
+		$scope.isSymfony ? config.routeur.symfony : config.routeur.default
+	);
 
-
-		// Try default configuration
-		try {
-
-			serverOptions.cwd = config.folder;
-			serverProcess = spawn('php', serverParameters, serverOptions);
-			serverProcess.addListener('close', serverCloseHandler);
-			serverProcess.addListener('error', serverErrorHandler);
-
-			serverProcess.stdout.addListener('data', serverDataHandler);
-			serverProcess.stderr.addListener('data', serverDataHandler);
-
-			$scope.server += '[READY] As simple server.';
-
-		} catch (error) {
-			$scope.server += '[ERROR] Server can\'t be launch. PHP 5.4 is needed and must be in your system path.';
-		}
-
-
-	}
-
-
-	function serverDataHandler(data) {
+	function updateServerElement(type, message) {
 		$scope.$apply(function () {
-			$scope.server += data;
+			$scope.server += '[' + type.toUpperCase() + '] ' + message + '\n';
 		});
+
 		serverElement.scrollTop = serverElement.scrollHeight * 2;
 	}
 
-	function serverCloseHandler(code) {
-		$scope.$apply(function () {
-			$scope.server += '[CLOSE] ' + code;
-		});
-		serverElement.scrollTop = serverElement.scrollHeight * 2;
-	}
 
-	function serverErrorHandler(error) {
-		$scope.$apply(function () {
-			$scope.server += '[ERROR] ' + error;
-		});
-		serverElement.scrollTop = serverElement.scrollHeight * 2;
+	function getUrl() {
+
+		var address = server.address === '0.0.0.0' ? 'localhost' : server.address;
+
+		return 'http://' + address + ':' + server.port + '/';
 	}
 
 
@@ -285,10 +263,10 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 			}
 
 			options = {
-				cwd: config.folder,
+				cwd: session.folder,
 				env: process.env,
 				detached: false,
-				stdio: ['pipe', 'pipe', 'pipe'],
+				stdio: ['pipe', 'pipe', 'pipe']
 			};
 
 			try {
@@ -325,7 +303,7 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 
 
 	function pushDataToScope(data, isTerminalCommand) {
-		$scope.stdout += '\n' + (isTerminalCommand === true ? config.folder + ' > ' : '') + data;
+		$scope.stdout += '\n' + (isTerminalCommand === true ? session.folder + ' > ' : '') + data;
 		terminalElement.scrollTop = terminalElement.scrollHeight * 2;
 	}
 
@@ -366,23 +344,10 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 
 
 	function dispose() {
-		disposeServer();
+		server.close();
 		disposeTerminalProcess();
 		disposeNativeWindow();
 		devTools = undefined;
-	}
-
-	function disposeServer() {
-		if (serverProcess) {
-			serverProcess.removeAllListeners();
-			serverProcess.kill();
-
-			disposeSocket(serverProcess.stdin);
-			disposeSocket(serverProcess.stdout);
-			disposeSocket(serverProcess.stderr);
-
-			serverProcess = undefined;
-		}
 	}
 
 	function disposeTerminalProcess() {

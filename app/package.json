@@ -1,7 +1,7 @@
 {
 	"name": "sftool",
 	"main": "index.html",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"single-instance": true,
 	"window": {
 		"title": "SF Tool",
@@ -13,5 +13,8 @@
 		"min_width": 640,
 		"min_height": 480
 	},
-	"chromium-args": "--child-clean-exit"
+	"chromium-args": "--child-clean-exit",
+	"dependencies": {
+		"php-built-in-server": "^0.1.1"
+	}
 }
