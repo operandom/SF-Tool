@@ -119,7 +119,7 @@ angular.module('sfc').controller('MainCtrl', function ($scope, $location, config
 
 
 	server.on('error', function (event) {
-		updateServerElement(event.type, event.error);
+		updateServerElement(event.type, '#' + event.error.length + '# ' + event.error);
 	});
 
 	server.on('listening', function (event) {
