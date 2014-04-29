@@ -2,7 +2,7 @@
 
 function trace() {
 	
-	$stderr = fopen('php://stdout', 'w');
+	$stdout = fopen('php://stdout', 'w');
 	
 	$message = '';
 	
@@ -22,7 +22,7 @@ function trace() {
 	
 	$time = date('h:m:s',time());
 	
-	fwrite($stderr, "[TRACE] $time > $message\n");
+	fwrite($stdout, "[TRACE] $time > $message\n");
 }
 
 if (is_file($_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.$_SERVER['SCRIPT_NAME'])) {
@@ -32,5 +32,7 @@ if (is_file($_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.$_SERVER['SCRIPT_NAME'
 $_SERVER['SCRIPT_FILENAME'] = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'app.php';
 
 require 'app.php';
+
+s
 
 ?>

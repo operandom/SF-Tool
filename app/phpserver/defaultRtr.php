@@ -2,7 +2,7 @@
 
 function trace() {
 	
-	$stderr = fopen('php://stdout', 'w');
+	$stdout = fopen('php://stdout', 'w');
 	
 	$message = '';
 	
@@ -22,7 +22,7 @@ function trace() {
 	
 	$time = date('h:m:s',time());
 	
-	fwrite($stderr, "[TRACE] $time > $message\n");
+	fwrite($stdout, "[TRACE] $time > $message\n");
 }
 
 
